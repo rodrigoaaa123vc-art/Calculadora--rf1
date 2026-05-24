@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RF PREMIUM 5D</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#020807;
+color:white;
+padding:10px;
+min-height:100vh;
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+background-attachment:fixed;
+overflow-x:hidden;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 80% 80%,rgba(0,255,80,.28),transparent 30%),
+radial-gradient(circle at 15% 15%,rgba(0,120,255,.12),transparent 25%),
+linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.20));
+pointer-events:none;
+z-index:-1;
+}
+
+.stage{
+width:100%;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+perspective:1200px;
+padding:20px 0 50px;
+}
+
+.app{
+width:100%;
+max-width:1120px;
+border:2px solid #00ff66;
+border-radius:25px;
+padding:18px;
+background:rgba(2,8,7,.55);
+box-shadow:
+0 0 25px #00ff66,
+0 0 80px rgba(0,255,90,.45),
+35px 35px 60px rgba(0,0,0,.95);
+transform:
+rotateX(var(--rx, 7deg))
+rotateY(var(--ry, -8deg))
+rotateZ(var(--rz, -1deg))
+scale(var(--zoom, 1));
+transform-style:preserve-3d;
+backdrop-filter:blur(3px);
+position:relative;
+}
+
+.app::after{
+content:"";
+position:absolute;
+inset:-8px;
+border-radius:30px;
+border:2px solid rgba(0,255,100,.45);
+box-shadow:0 0 35px #00ff66;
+pointer-events:none;
+transform:translateZ(-20px);
+}
+
+.top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.badge5d{
+font-size:28px;
+font-weight:900;
+background:white;
+color:#111;
+border-radius:10px;
+padding:5px 10px;
+box-shadow:0 0 15px white;
+}
+
+h1{
+font-size:42px;
+color:#00ff66;
+text-shadow:0 0 15px #00ff66;
+}
+
+.clock{
+font-size:34px;
+color:#00ff66;
+text-shadow:0 0 15px #00ff66;
+border:2px solid #00ff66;
+border-radius:12px;
+padding:10px 20px;
+background:#020807;
+font-weight:bold;
+box-shadow:0 0 18px #00ff66;
+}
+
+.section{
+margin-top:15px;
+padding:15px;
+border-radius:15px;
+border:1px solid #ffffff55;
+background:rgba(0,0,0,.38);
+box-shadow:inset 0 0 20px rgba(0,255,100,.08);
+}
+
+.inputs,.cards,.summary,.actions{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:12px;
+}
+
+.card,.item{
+padding:15px;
+border-radius:15px;
+background:rgba(0,0,0,.48);
+min-height:120px;
+box-shadow:inset 0 0 20px rgba(255,255,255,.04);
+}
+
+.green{border:2px solid #00ff55;box-shadow:0 0 15px rgba(0,255,85,.45)}
+.red{border:2px solid #ff2222;box-shadow:0 0 15px rgba(255,34,34,.45)}
+.blue{border:2px solid #008cff;box-shadow:0 0 15px rgba(0,140,255,.45)}
+.purple{border:2px solid #b700ff;box-shadow:0 0 15px rgba(183,0,255,.45)}
+
+label{
+font-size:14px;
+color:#ddd;
+}
+
+input,select,button{
+width:100%;
+padding:12px;
+margin-top:8px;
+border-radius:8px;
+font-size:16px;
+}
+
+input,select{
+background:#06110d;
+border:1px solid #ffffff66;
+color:white;
+}
+
+button{
+font-weight:bold;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+.btnWin{background:linear-gradient(#00b83d,#005c1f)}
+.btnLoss{background:linear-gradient(#c90000,#5c0000)}
+.btnBlue{background:linear-gradient(#006cff,#002e73)}
+.btnPurple{background:linear-gradient(#b000e6,#500066)}
+.btnSave{background:linear-gradient(#00a832,#004d16)}
+.btnClear{background:linear-gradient(#d00000,#620000)}
+
+.money{
+font-size:28px;
+margin-top:12px;
+font-weight:bold;
+}
+
+.big{
+font-size:25px;
+margin-top:10px;
+}
+
+.ok{color:#00ff55}
+.bad{color:#ff3333}
+.yellow{color:#ffee00}
+.cyan{color:#24bfff}
+
+table{
+width:100%;
+border-collapse:collapse;
+font-size:13px;
+}
+
+th,td{
+border:1px solid #ffffff44;
+padding:7px;
+text-align:center;
+}
+
+th{
+color:#24bfff;
+}
+
+@media(max-width:750px){
+.stage{
+perspective:900px;
+padding-top:15px;
+}
+.app{
+padding:12px;
+}
+h1{
+font-size:32px;
+}
+.clock{
+font-size:24px;
+}
+.money{
+font-size:24px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+
+<div class="app">
+
+<div class="top">
+<div class="logo">
+<div class="badge5d">5D</div>
+<h1>RF PREMIUM</h1>
+</div>
+<div class="clock" id="relogio">00:00:00</div>
+</div>
+
+<div class="section">
+<div class="inputs">
+
+<div>
+<label>Banca Atual</label>
+<input id="banca" type="number" value="100" step="0.01">
+</div>
+
+<div>
+<label>Risco %</label>
+<input id="risco" type="number" value="5">
+</div>
+
+<div>
+<label>Meta %</label>
+<input id="meta" type="number" value="10">
+</div>
+
+<div>
+<label>Payout %</label>
+<input id="payout" type="number" value="85">
+</div>
+
+<div>
+<label>Mãos Soros</label>
+<input id="maos" type="number" value="1">
+</div>
+
+<div>
+<label>Assertividade %</label>
+<input id="assert" type="number" value="60">
+</div>
+
+<div>
+<label>Dias do mês</label>
+<input id="dias" type="number" value="30">
+</div>
+
+<div>
+<label>Estratégia</label>
+<input id="estrategia" type="text">
+</div>
+
+<div>
+<label>Primeiro dia de operação</label>
+<input id="dataInicio" type="date">
+</div>
+
+<div>
+<label>Consultar operação</label>
+<input id="dataConsulta" type="date">
+</div>
+
+</div>
+</div>
+
+<div class="section">
+<div class="cards">
+
+<div class="card green">
+<h2>WIN</h2>
+<div id="valorWin" class="money ok">R$ 0,00</div>
+<div id="pctWin" class="big">+0%</div>
+<button class="btnWin" onclick="win()">WIN</button>
+<button class="btnBlue" onclick="resetWin()">RESET WIN</button>
+</div>
+
+<div class="card red">
+<h2>LOSS</h2>
+<div id="valorLoss" class="money bad">R$ 0,00</div>
+<div id="pctLoss" class="big">-0%</div>
+<button class="btnLoss" onclick="loss()">LOSS</button>
+<button class="btnBlue" onclick="resetLoss()">RESET LOSS</button>
+</div>
+
+<div class="card purple">
+<h2>SOROS</h2>
+<div id="valorSoros" class="money" style="color:#ff4dff">R$ 0,00</div>
+<div id="pctSoros" class="big">+0%</div>
+<button class="btnPurple" onclick="soros()">SOROS</button>
+<button class="btnBlue" onclick="resetSoros()">RESET SOROS</button>
+</div>
+
+<div class="card blue">
+<h2>PRÓXIMA ENTRADA</h2>
+<div id="proxima" class="money cyan">R$ 0,00</div>
+<div id="pctEntrada" class="big">0%</div>
+<div class="yellow">MÃO: <span id="maoAtual">1</span></div>
+</div>
+
+</div>
+</div>
+
+<div class="section">
+<div class="cards">
+
+<div class="card green">
+<h2>STOP WIN</h2>
+<div id="stopWin" class="money ok">R$ 0,00</div>
+</div>
+
+<div class="card red">
+<h2>STOP LOSS</h2>
+<div id="stopLoss" class="money bad">R$ 0,00</div>
+</div>
+
+<div class="card">
+<h2>STATUS</h2>
+<div id="status" class="big yellow">OPERANDO</div>
+</div>
+
+</div>
+</div>
+
+<div class="section">
+<h2 class="cyan">RESUMO DO DIA</h2>
+<div class="summary">
+
+<div class="item"><span>BANCA BASE</span><b id="baseCalc">R$ 0,00</b></div>
+<div class="item"><span>LUCRO DO DIA</span><b id="lucroDia">R$ 0,00</b></div>
+<div class="item"><span>WINS</span><b id="winsDia">0</b></div>
+<div class="item"><span>LOSS</span><b id="lossDia">0</b></div>
+<div class="item"><span>ASSERTIVIDADE</span><b id="assertReal">0%</b></div>
+
+</div>
+</div>
+
+<div class="section">
+<h2 class="cyan">📈 PROJEÇÃO JUROS COMPOSTOS</h2>
+<div class="summary">
+
+<div class="item"><span>DIAS WIN</span><b id="pWin">0</b></div>
+<div class="item"><span>DIAS LOSS</span><b id="pLoss">0</b></div>
+<div class="item"><span>BANCA FINAL</span><b id="pBanca">R$ 0,00</b></div>
+<div class="item"><span>LUCRO</span><b id="pLucro">R$ 0,00</b></div>
+
+</div>
+</div>
+
+<div class="section">
+<h2 class="cyan">🖼️ IMAGEM DE FUNDO</h2>
+<input type="file" id="bgInput" accept="image/*">
+<button class="btnSave" onclick="aplicarFundo()">APLICAR IMAGEM</button>
+<button class="btnLoss" onclick="removerFundo()">REMOVER FUNDO</button>
+</div>
+
+<div class="section">
+<h2 class="cyan">🎨 PERSONALIZAR CALCULADORA</h2>
+
+<label>Transparência</label>
+<input type="range" id="transparenciaCalc" min="0.20" max="0.95" step="0.05" value="0.55" oninput="mudarTema()">
+
+<label>Cor</label>
+<select id="temaCalc" onchange="mudarTema()">
+<option value="2,8,7">Preto transparente</option>
+<option value="20,20,20">Preto claro</option>
+<option value="0,0,0">Preto escuro</option>
+<option value="6,17,13">Verde escuro</option>
+<option value="11,18,32">Azul escuro</option>
+<option value="36,0,24">Roxo escuro</option>
+</select>
+</div>
+
+<div class="section">
+<h2 class="cyan">📐 AJUSTAR 5D</h2>
+
+<label>Inclinar pra cima/baixo</label>
+<input type="range" id="rx" min="-15" max="15" value="7" oninput="ajustar5D()">
+
+<label>Virar esquerda/direita</label>
+<input type="range" id="ry" min="-20" max="20" value="-8" oninput="ajustar5D()">
+
+<label>Girar tela</label>
+<input type="range" id="rz" min="-10" max="10" value="-1" oninput="ajustar5D()">
+
+<label>Zoom</label>
+<input type="range" id="zoom5d" min="0.70" max="1.10" step="0.01" value="1" oninput="ajustar5D()">
+
+<button class="btnBlue" onclick="centralizar5D()">CENTRALIZAR</button>
+<button class="btnSave" onclick="efeito5D()">VOLTAR 5D</button>
+</div>
+
+<div class="section">
+<h2 class="cyan">📅 CONSULTAR OPERAÇÃO</h2>
+<div class="summary">
+
+<div class="item"><span>DATA</span><b id="cData">---</b></div>
+<div class="item"><span>DIA</span><b id="cDia">---</b></div>
+<div class="item"><span>BANCA INICIAL</span><b id="cInicial">---</b></div>
+<div class="item"><span>BANCA FINAL</span><b id="cFinal">---</b></div>
+<div class="item"><span>RESULTADO</span><b id="cResultado">---</b></div>
+
+</div>
+</div>
+
+<div class="section">
+<h2 class="cyan">📅 HISTÓRICO</h2>
+<div style="overflow:auto">
+<table>
+<thead>
+<tr>
+<th>DATA</th>
+<th>DIA</th>
+<th>INICIAL</th>
+<th>FINAL</th>
+<th>LUCRO</th>
+<th>RESULTADO</th>
+<th>WINS</th>
+<th>LOSS</th>
+<th>ESTRATÉGIA</th>
+</tr>
+</thead>
+<tbody id="historico"></tbody>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="actions">
+
+<button class="btnSave" onclick="novaBase()">💾 SALVAR BANCA</button>
+<button class="btnBlue" onclick="resetMes()">RESETAR MÊS</button>
+<button class="btnClear" onclick="limparTudo()">LIMPAR TUDO</button>
+<button class="btnBlue" onclick="resetWin()">RESET WIN</button>
+<button class="btnBlue" onclick="resetLoss()">RESET LOSS</button>
+<button class="btnBlue" onclick="resetSoros()">RESET SOROS</button>
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+let base=Number(localStorage.getItem("rf_base"))||100;
+let bancaAtual=Number(localStorage.getItem("rf_banca"))||base;
+let wins=Number(localStorage.getItem("rf_wins"))||0;
+let losses=Number(localStorage.getItem("rf_losses"))||0;
+let historico=JSON.parse(localStorage.getItem("rf_historico")||"[]");
+let dataInicio=localStorage.getItem("rf_data_inicio")||"";
+let maoAtual=Number(localStorage.getItem("rf_mao"))||1;
+
+document.getElementById("banca").value=bancaAtual.toFixed(2);
+
+function moeda(v){
+return Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+}
+
+function num(id){
+return parseFloat(String(document.getElementById(id).value).replace(",","."))||0;
+}
+
+function hojeISO(){
+let d=new Date();
+return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
+function isoBR(x){
+if(!x)return"---";
+let p=x.split("-");
+return p[2]+"/"+p[1]+"/"+p[0];
+}
+
+function diasEntre(a,b){
+let d1=new Date(a+"T00:00:00");
+let d2=new Date(b+"T00:00:00");
+return Math.max(1,Math.floor((d2-d1)/86400000)+1);
+}
+
+function relogioLED(){
+let d=new Date();
+let h=String(d.getHours()).padStart(2,"0");
+let m=String(d.getMinutes()).padStart(2,"0");
+let s=String(d.getSeconds()).padStart(2,"0");
+document.getElementById("relogio").innerText=h+":"+m+":"+s;
+}
+setInterval(relogioLED,1000);
+relogioLED();
+
+function salvar(){
+localStorage.setItem("rf_base",base);
+localStorage.setItem("rf_banca",bancaAtual);
+localStorage.setItem("rf_wins",wins);
+localStorage.setItem("rf_losses",losses);
+localStorage.setItem("rf_historico",JSON.stringify(historico));
+localStorage.setItem("rf_data_inicio",dataInicio);
+localStorage.setItem("rf_mao",maoAtual);
+}
+
+function iniciarDatas(){
+if(!dataInicio){
+dataInicio=hojeISO();
+localStorage.setItem("rf_data_inicio",dataInicio);
+}
+document.getElementById("dataInicio").value=dataInicio;
+document.getElementById("dataConsulta").value=hojeISO();
+}
+
+function calc(){
+bancaAtual=num("banca");
+dataInicio=document.getElementById("dataInicio").value||dataInicio||hojeISO();
+
+let risco=num("risco")/100;
+let meta=num("meta")/100;
+let payout=num("payout")/100;
+let entrada=bancaAtual*risco;
+let ganho=entrada*payout;
+
+document.getElementById("valorWin").innerText=moeda(ganho);
+document.getElementById("valorLoss").innerText=moeda(entrada);
+
+document.getElementById("pctWin").innerText="+"+((ganho/base)*100).toFixed(2)+"%";
+document.getElementById("pctLoss").innerText="-"+((entrada/base)*100).toFixed(2)+"%";
+
+let lucroSoros=0;
+let ent=entrada;
+let maos=Math.max(1,parseInt(num("maos")));
+
+for(let i=0;i<maos;i++){
+let g=ent*payout;
+lucroSoros+=g;
+ent+=g;
+}
+
+document.getElementById("valorSoros").innerText=moeda(lucroSoros);
+document.getElementById("pctSoros").innerText="+"+((lucroSoros/base)*100).toFixed(2)+"%";
+
+document.getElementById("proxima").innerText=moeda(entrada);
+document.getElementById("pctEntrada").innerText=((entrada/base)*100).toFixed(2)+"%";
+document.getElementById("maoAtual").innerText=maoAtual;
+
+document.getElementById("stopWin").innerText=moeda(base*meta);
+document.getElementById("stopLoss").innerText=moeda(base*risco);
+
+let lucro=bancaAtual-base;
+
+document.getElementById("baseCalc").innerText=moeda(base);
+document.getElementById("lucroDia").innerText=moeda(lucro);
+document.getElementById("winsDia").innerText=wins;
+document.getElementById("lossDia").innerText=losses;
+
+let total=wins+losses;
+document.getElementById("assertReal").innerText=total?((wins/total)*100).toFixed(2)+"%":"0%";
+
+if(lucro>=base*meta){
+document.getElementById("status").innerText="STOP WIN";
+}else if(lucro<=-(base*risco)){
+document.getElementById("status").innerText="STOP LOSS";
+}else{
+document.getElementById("status").innerText="OPERANDO";
+}
+
+projecao();
+renderHistorico();
+consultarData();
+salvar();
+}
+
+function win(){
+let entrada=bancaAtual*(num("risco")/100);
+let ganho=entrada*(num("payout")/100);
+bancaAtual+=ganho;
+wins++;
+maoAtual=2;
+document.getElementById("banca").value=bancaAtual.toFixed(2);
+calc();
+}
+
+function loss(){
+let entrada=bancaAtual*(num("risco")/100);
+bancaAtual-=entrada;
+losses++;
+maoAtual=1;
+document.getElementById("banca").value=bancaAtual.toFixed(2);
+calc();
+}
+
+function soros(){
+let risco=num("risco")/100;
+let payout=num("payout")/100;
+let maos=Math.max(1,parseInt(num("maos")));
+let entrada=bancaAtual*risco;
+let lucro=0;
+
+for(let i=0;i<maos;i++){
+let g=entrada*payout;
+lucro+=g;
+entrada+=g;
+}
+
+bancaAtual+=lucro;
+wins++;
+maoAtual=maos+1;
+document.getElementById("banca").value=bancaAtual.toFixed(2);
+calc();
+}
+
+function resetWin(){
+wins=0;
+calc();
+}
+
+function resetLoss(){
+losses=0;
+calc();
+}
+
+function resetSoros(){
+maoAtual=1;
+calc();
+}
+
+function novaBase(){
+let data=hojeISO();
+let lucro=bancaAtual-base;
+
+let reg={
+dataISO:data,
+data:isoBR(data),
+dia:diasEntre(dataInicio,data),
+inicial:base,
+final:bancaAtual,
+lucro:lucro,
+resultado:lucro>0?"WIN":lucro<0?"LOSS":"ZERO",
+wins:wins,
+loss:losses,
+estrategia:document.getElementById("estrategia").value||"---"
+};
+
+let i=historico.findIndex(h=>h.dataISO===data);
+
+if(i>=0){
+historico[i]=reg;
+}else{
+historico.push(reg);
+}
+
+base=bancaAtual;
+wins=0;
+losses=0;
+maoAtual=1;
+document.getElementById("banca").value=bancaAtual.toFixed(2);
+calc();
+}
+
+function projecao(){
+let b=base;
+let dias=Math.max(1,parseInt(num("dias")));
+let ass=Math.min(100,Math.max(0,num("assert")));
+let winDias=Math.round(dias*(ass/100));
+let lossDias=dias-winDias;
+let risco=num("risco")/100;
+let meta=num("meta")/100;
+
+for(let i=1;i<=dias;i++){
+if(i<=winDias){
+b+=b*meta;
+}else{
+b-=b*risco;
+}
+}
+
+document.getElementById("pWin").innerText=winDias;
+document.getElementById("pLoss").innerText=lossDias;
+document.getElementById("pBanca").innerText=moeda(b);
+document.getElementById("pLucro").innerText=moeda(b-base);
+}
+
+function renderHistorico(){
+let tbody=document.getElementById("historico");
+tbody.innerHTML="";
+
+historico.slice().reverse().forEach(h=>{
+tbody.innerHTML+=`
+<tr>
+<td>${h.data}</td>
+<td>${h.dia}º dia</td>
+<td>${moeda(h.inicial)}</td>
+<td>${moeda(h.final)}</td>
+<td>${moeda(h.lucro)}</td>
+<td>${h.resultado}</td>
+<td>${h.wins}</td>
+<td>${h.loss}</td>
+<td>${h.estrategia}</td>
+</tr>`;
+});
+}
+
+function consultarData(){
+let data=document.getElementById("dataConsulta").value;
+let r=historico.find(h=>h.dataISO===data);
+
+document.getElementById("cData").innerText=isoBR(data);
+document.getElementById("cDia").innerText=diasEntre(dataInicio,data)+"º dia";
+
+if(!r){
+document.getElementById("cInicial").innerText="Sem registro";
+document.getElementById("cFinal").innerText="---";
+document.getElementById("cResultado").innerText="---";
+return;
+}
+
+document.getElementById("cInicial").innerText=moeda(r.inicial);
+document.getElementById("cFinal").innerText=moeda(r.final);
+document.getElementById("cResultado").innerText=r.resultado;
+}
+
+function aplicarFundo(){
+let arq=document.getElementById("bgInput").files[0];
+
+if(!arq){
+alert("Escolha uma imagem");
+return;
+}
+
+let leitor=new FileReader();
+
+leitor.onload=function(e){
+document.body.style.backgroundImage=`linear-gradient(rgba(0,0,0,0.12),rgba(0,0,0,0.12)),url('${e.target.result}')`;
+localStorage.setItem("rf_fundo",e.target.result);
+};
+
+leitor.readAsDataURL(arq);
+}
+
+function removerFundo(){
+document.body.style.backgroundImage="none";
+localStorage.removeItem("rf_fundo");
+}
+
+function carregarFundo(){
+let f=localStorage.getItem("rf_fundo");
+
+if(f){
+document.body.style.backgroundImage=`linear-gradient(rgba(0,0,0,0.12),rgba(0,0,0,0.12)),url('${f}')`;
+}
+}
+
+function mudarTema(){
+let cor=document.getElementById("temaCalc").value;
+let op=document.getElementById("transparenciaCalc").value;
+document.querySelector(".app").style.background=`rgba(${cor},${op})`;
+localStorage.setItem("rf_cor_calc",cor);
+localStorage.setItem("rf_op_calc",op);
+}
+
+function carregarTema(){
+let cor=localStorage.getItem("rf_cor_calc");
+let op=localStorage.getItem("rf_op_calc");
+
+if(cor){
+document.getElementById("temaCalc").value=cor;
+}
+
+if(op){
+document.getElementById("transparenciaCalc").value=op;
+}
+
+mudarTema();
+}
+
+function ajustar5D(){
+let rx=document.getElementById("rx").value;
+let ry=document.getElementById("ry").value;
+let rz=document.getElementById("rz").value;
+let zoom=document.getElementById("zoom5d").value;
+
+let app=document.querySelector(".app");
+
+app.style.setProperty("--rx",rx+"deg");
+app.style.setProperty("--ry",ry+"deg");
+app.style.setProperty("--rz",rz+"deg");
+app.style.setProperty("--zoom",zoom);
+
+localStorage.setItem("rf_rx",rx);
+localStorage.setItem("rf_ry",ry);
+localStorage.setItem("rf_rz",rz);
+localStorage.setItem("rf_zoom5d",zoom);
+}
+
+function centralizar5D(){
+document.getElementById("rx").value=0;
+document.getElementById("ry").value=0;
+document.getElementById("rz").value=0;
+document.getElementById("zoom5d").value=1;
+ajustar5D();
+}
+
+function efeito5D(){
+document.getElementById("rx").value=7;
+document.getElementById("ry").value=-8;
+document.getElementById("rz").value=-1;
+document.getElementById("zoom5d").value=1;
+ajustar5D();
+}
+
+function carregar5D(){
+if(localStorage.getItem("rf_rx")){
+document.getElementById("rx").value=localStorage.getItem("rf_rx");
+document.getElementById("ry").value=localStorage.getItem("rf_ry");
+document.getElementById("rz").value=localStorage.getItem("rf_rz");
+document.getElementById("zoom5d").value=localStorage.getItem("rf_zoom5d");
+}
+ajustar5D();
+}
+
+function resetMes(){
+historico=[];
+wins=0;
+losses=0;
+base=bancaAtual;
+maoAtual=1;
+calc();
+}
+
+function limparTudo(){
+localStorage.clear();
+location.reload();
+}
+
+document.querySelectorAll("input,select").forEach(e=>{
+if(e.id!=="bgInput"){
+e.addEventListener("input",calc);
+}
+});
+
+document.getElementById("temaCalc").addEventListener("change",mudarTema);
+document.getElementById("transparenciaCalc").addEventListener("input",mudarTema);
+
+iniciarDatas();
+carregarFundo();
+carregarTema();
+calc();
+carregar5D();
+</script>
+
+</body>
+</html>
